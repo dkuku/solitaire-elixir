@@ -18,7 +18,7 @@ defmodule Solitaire do
 
   """
   
-    @type suit :: :hearts | :diamonds | :spades | :clubs
+    @type suit :: :hearts | :diams | :spades | :clubs
     @type value :: non_neg_integer
     @type colour :: :red | :black
     @type card :: { suit , value }
@@ -49,14 +49,14 @@ defmodule Solitaire do
     end
 
     defp colour_of_suit(:hearts), do: :red
-    defp colour_of_suit(:diamonds), do: :red
+    defp colour_of_suit(:diams), do: :red
     defp colour_of_suit(:clubs), do: :black
     defp colour_of_suit(:spades), do: :black
 
     @spec suits :: [ suit ]
     @doc "List of possible card suits"
     def suits do
-      [:hearts, :diamonds, :spades, :clubs]
+      [:hearts, :diams, :spades, :clubs]
     end
 
     @spec values :: [ value ]

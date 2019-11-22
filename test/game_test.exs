@@ -48,7 +48,7 @@ defmodule GameTest do
      moves = Game.possible_moves(game)
 
      assert length(moves) == 3
-     assert List.first(moves) == {:tableau, 3, :foundation, 0, {:diamonds, 1}}
+     assert List.first(moves) == {:tableau, 3, :foundation, 0, {:diams, 1}}
   end
 
   test "Move the Ace from tableau to foundation" do
@@ -59,7 +59,7 @@ defmodule GameTest do
 
      first_foundation = List.first(Game.foundations(game))
      assert length(first_foundation) == 1
-     assert List.first(Foundation.up(first_foundation)) == Cards.new(:diamonds,1)
+     assert List.first(Foundation.up(first_foundation)) == Cards.new(:diams,1)
 
      fourth_tableau = Enum.at(Game.tableaus(game),3)
      assert length(Tableau.down(fourth_tableau)) == 2
@@ -72,9 +72,9 @@ defmodule GameTest do
      moves = Game.possible_moves(game)
 
      assert length(moves) == 3
-     assert moves == [{:tableau, 3, :foundation, 0, {:diamonds, 1}}, # Ace of diamonds to empty foundation
+     assert moves == [{:tableau, 3, :foundation, 0, {:diams, 1}}, # Ace of diams to empty foundation
                       {:tableau, 6, :tableau, 4, {:spades, 2}},      # 2 of spades to 3 of hearts
-                      {:tableau, 3, :tableau, 6, {:diamonds, 1}}     # Ace of diamonds on 2 of spades
+                      {:tableau, 3, :tableau, 6, {:diams, 1}}     # Ace of diams on 2 of spades
                      ] 
   end
 
@@ -132,12 +132,12 @@ defmodule GameTest do
     deck = Deck.shuffle(Deck.new,1)
     game = Game.new(deck)
 
-    game = Game.perform(game,{:deck , 0, :tableau, 0, {Cards.new(:diamonds,3)}})
+    game = Game.perform(game,{:deck , 0, :tableau, 0, {Cards.new(:diams,3)}})
     game = Game.turn(game)
     game = Game.perform(game,{:deck , 0, :tableau, 3, {Cards.new(:hearts,1)}})
 
     errors = Game.Debug.validate(game)
-    assert errors == [{:tableau_mismatch, 0, Cards.new(:diamonds, 3), Cards.new(:diamonds, 1) },
+    assert errors == [{:tableau_mismatch, 0, Cards.new(:diams, 3), Cards.new(:diams, 1) },
                       {:tableau_mismatch, 3, Cards.new(:hearts, 1),   Cards.new(:spades, 1)}]
   end
 
@@ -147,10 +147,10 @@ defmodule GameTest do
 
     game = Game.turn(game)
     game = Game.perform(game,{:deck , 0, :foundation, 0, {Cards.new(:hearts,1)}})
-    game = Game.perform(game,{:deck , 0, :foundation, 0, {Cards.new(:diamonds,3)}})
+    game = Game.perform(game,{:deck , 0, :foundation, 0, {Cards.new(:diams,3)}})
 
     errors = Game.Debug.validate(game)
-    assert errors == [{:foundation_mismatch, 0, Cards.new(:diamonds, 3), Cards.new(:hearts, 1) }]
+    assert errors == [{:foundation_mismatch, 0, Cards.new(:diams, 3), Cards.new(:hearts, 1) }]
   end
 
   test "Detect foundations not built on ace" do
@@ -159,10 +159,10 @@ defmodule GameTest do
 
     game = Game.turn(game)
     game = Game.perform(game,{:deck , 0, :foundation, 0, {Cards.new(:hearts,1)}})
-    game = Game.perform(game,{:deck , 0, :foundation, 1, {Cards.new(:diamonds,3)}})
+    game = Game.perform(game,{:deck , 0, :foundation, 1, {Cards.new(:diams,3)}})
 
     errors = Game.Debug.validate(game)
-    assert errors == [{:foundation_base_mismatch, 1, Cards.new(:diamonds, 3), nil }]
+    assert errors == [{:foundation_base_mismatch, 1, Cards.new(:diams, 3), nil }]
   end
     
   defp test_game() do
@@ -170,16 +170,16 @@ defmodule GameTest do
     Game.new(deck)
 
     # This test game has the following structure
-    # Deck: [clubs: 9, hearts: 7, hearts: 9, diamonds: 5, diamonds: 13, clubs: 10,
-    #        spades: 1, clubs: 4, hearts: 1, diamonds: 7, diamonds: 12, diamonds: 4,
-    #        diamonds: 9, hearts: 2, clubs: 5, diamonds: 10, diamonds: 3, hearts: 8,
-    #        spades: 13, hearts: 5, hearts: 13, clubs: 2, hearts: 4, diamonds: 6]
+    # Deck: [clubs: 9, hearts: 7, hearts: 9, diams: 5, diams: 13, clubs: 10,
+    #        spades: 1, clubs: 4, hearts: 1, diams: 7, diams: 12, diams: 4,
+    #        diams: 9, hearts: 2, clubs: 5, diams: 10, diams: 3, hearts: 8,
+    #        spades: 13, hearts: 5, hearts: 13, clubs: 2, hearts: 4, diams: 6]
     # Tableaus (down, up)
     # 0 => {[], [clubs: 8]}
     # 1 => {[spades: 6], [spades: 5]} 
     # 2 => {[spades: 7, clubs: 1], [clubs: 13]}
-    # 3 => {[spades: 12, spades: 8, diamonds: 2], [diamonds: 1]}
-    # 4 => {[clubs: 6, spades: 4, diamonds: 8, diamonds: 11], [hearts: 3]}
+    # 3 => {[spades: 12, spades: 8, diams: 2], [diams: 1]}
+    # 4 => {[clubs: 6, spades: 4, diams: 8, diams: 11], [hearts: 3]}
     # 5 => {[hearts: 10, hearts: 6, clubs: 7, hearts: 11, spades: 9], [spades: 10]}
     # 6 => {[spades: 11, spades: 3, clubs: 12, hearts: 12, clubs: 11, clubs: 3], [spades: 2]}
     # Foundations

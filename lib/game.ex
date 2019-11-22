@@ -10,7 +10,7 @@ defmodule Solitaire.Game do
       7
       iex> moves = Solitaire.Game.possible_moves(game)
       iex> moves
-      [{:tableau, 3, :foundation, 0, {:diamonds, 1}},{:tableau, 6, :tableau, 4, {:spades, 2}},{:tableau, 3, :tableau, 6, {:diamonds, 1}}]
+      [{:tableau, 3, :foundation, 0, {:diams, 1}},{:tableau, 6, :tableau, 4, {:spades, 2}},{:tableau, 3, :tableau, 6, {:diams, 1}}]
       iex> game = Solitaire.Game.perform(game,List.first(moves))
       iex> moves = Solitaire.Game.possible_moves(game)
       iex> moves

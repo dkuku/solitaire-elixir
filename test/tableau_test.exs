@@ -20,22 +20,22 @@ defmodule TableauTest do
   test "add a set of down cards to the tableau. The top down card is turned up" do
     tableau = Tableau.new
       |> Tableau.add([Cards.new(:hearts,12) ,
-                      Cards.new(:diamonds,7) ,
+                      Cards.new(:diams,7) ,
                       Cards.new(:spades,1) ])
 
-    assert Tableau.down(tableau) == [ Cards.new(:diamonds,7) , Cards.new(:spades,1) ]
+    assert Tableau.down(tableau) == [ Cards.new(:diams,7) , Cards.new(:spades,1) ]
     assert Tableau.up(tableau)   == [ Cards.new(:hearts,12) ]
   end
 
   test "When adding cards to a tableau with an up card, the up card is kept" do
     tableau = Tableau.new
       |> Tableau.add([Cards.new(:hearts,12) ,
-                      Cards.new(:diamonds,7) ,
+                      Cards.new(:diams,7) ,
                       Cards.new(:spades,1) ])
 
     tableau = Tableau.add(tableau,[Cards.new(:clubs,5) ])
 
-    assert Tableau.down(tableau) == [ Cards.new(:diamonds,7) , Cards.new(:spades,1),Cards.new(:clubs,5) ]
+    assert Tableau.down(tableau) == [ Cards.new(:diams,7) , Cards.new(:spades,1),Cards.new(:clubs,5) ]
     assert Tableau.up(tableau)   == [ Cards.new(:hearts,12) ]
   end
 
@@ -50,7 +50,7 @@ defmodule TableauTest do
   test "Can drop a cards on a non-empty tableau if it has a different colour and its value is one less than top up card" do
     tableau = Tableau.new
      |> Tableau.add([Cards.new(:hearts,12) ,
-                     Cards.new(:diamonds,7) ,
+                     Cards.new(:diams,7) ,
                      Cards.new(:spades,1) ])
 
     assert Tableau.can_drop?(tableau,Cards.new(:clubs,11))
@@ -72,7 +72,7 @@ defmodule TableauTest do
   test "When a card is dropped onto an non-empty tableau it becomes the top up card" do
     tableau = Tableau.new
       |> Tableau.add([Cards.new(:hearts,12) ,
-                      Cards.new(:diamonds,7) ,
+                      Cards.new(:diams,7) ,
                       Cards.new(:spades,1) ])
       |> Tableau.drop(Cards.new(:spades,11))
 
@@ -83,7 +83,7 @@ defmodule TableauTest do
   test "When a pile of cards is dropped onto an non-empty tableau it lands on the top up card" do
     tableau = Tableau.new
       |> Tableau.add([Cards.new(:hearts,12) ,
-                      Cards.new(:diamonds,7) ,
+                      Cards.new(:diams,7) ,
                       Cards.new(:spades,1) ])
       |> Tableau.drop_cards([Cards.new(:clubs,9),Cards.new(:hearts, 10),Cards.new(:spades,11)])
 
@@ -99,7 +99,7 @@ defmodule TableauTest do
   test "An filled tableau has a bottom card: the lowest value visible card" do
     tableau = Tableau.new
      |> Tableau.add([Cards.new(:hearts,12) ,
-                     Cards.new(:diamonds,7) ,
+                     Cards.new(:diams,7) ,
                      Cards.new(:spades,1) ])
 
     assert Tableau.bottom_card(tableau) == Cards.new(:hearts,12)
@@ -108,28 +108,28 @@ defmodule TableauTest do
   test "Taking a card from a Tableau turns the next down card up" do
     tableau = Tableau.new
       |> Tableau.add([Cards.new(:hearts,12) ,
-                      Cards.new(:diamonds,7) ,
+                      Cards.new(:diams,7) ,
                       Cards.new(:spades,1) ])
 
     tableau = Tableau.take(tableau)                           
-    assert Tableau.bottom_card(tableau) == Cards.new(:diamonds,7)
+    assert Tableau.bottom_card(tableau) == Cards.new(:diams,7)
   end
 
   test "Taking all cards from a Tableau turns the next down card up" do
     tableau = Tableau.new
       |> Tableau.add([Cards.new(:hearts,12) ,
-                      Cards.new(:diamonds,7) ,
+                      Cards.new(:diams,7) ,
                       Cards.new(:spades,1) ])
       |> Tableau.drop(Cards.new(:spades, 11))
 
     tableau = Tableau.take_all(tableau)                           
-    assert Tableau.bottom_card(tableau) == Cards.new(:diamonds,7)
+    assert Tableau.bottom_card(tableau) == Cards.new(:diams,7)
   end
 
   test "A filled tableau has a top card: the highest visible card" do
     tableau = Tableau.new
      |> Tableau.add([Cards.new(:hearts,12) ,
-                     Cards.new(:diamonds,7) ,
+                     Cards.new(:diams,7) ,
                      Cards.new(:spades,1) ])
      |> Tableau.drop(Cards.new(:spades, 11))
 
@@ -151,7 +151,7 @@ defmodule TableauTest do
   test "A filled tableau has non-zero size" do
    tableau = Tableau.new
      |> Tableau.add([Cards.new(:hearts,12) ,
-                     Cards.new(:diamonds,7) ,
+                     Cards.new(:diams,7) ,
                      Cards.new(:spades,1) ])
 
     assert Tableau.cards_up(tableau) == 1

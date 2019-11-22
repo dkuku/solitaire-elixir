@@ -12,10 +12,10 @@
 
       iex> tableau = Solitaire.Tableau.new
       iex> |> Solitaire.Tableau.add([Solitaire.Cards.new(:hearts,12) ,
-      iex>                          Solitaire.Cards.new(:diamonds,7) ,
+      iex>                          Solitaire.Cards.new(:diams,7) ,
       iex>                          Solitaire.Cards.new(:spades,1) ])
       iex> Solitaire.Tableau.down(tableau)
-      [ {:diamonds,7} , {:spades,1} ]
+      [ {:diams,7} , {:spades,1} ]
       iex> Solitaire.Tableau.up(tableau)
       [ {:hearts,12} ]
 
