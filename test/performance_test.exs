@@ -1,4 +1,4 @@
-#Separate test modules for each test so that they're run in parallel
+# Separate test modules for each test so that they're run in parallel
 
 defmodule PerformanceTest1 do
   use ExUnit.Case, async: true

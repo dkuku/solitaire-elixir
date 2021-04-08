@@ -6,7 +6,7 @@ defmodule StockTest do
   alias Solitaire.Deck, as: Deck
 
   test "The initial card contains all down, no up cards" do
-    deck = Deck.new
+    deck = Deck.new()
     stock = Stock.new(deck)
 
     assert length(Stock.down(stock)) == 52
@@ -14,7 +14,7 @@ defmodule StockTest do
   end
 
   test "Turning cards moves them from down to up section" do
-    deck = Deck.new
+    deck = Deck.new()
     stock = Stock.new(deck)
     top = List.first(Stock.down(stock))
 
@@ -25,7 +25,7 @@ defmodule StockTest do
   end
 
   test "The stock is exhausted when all cards are turned over" do
-    deck = Deck.new
+    deck = Deck.new()
     stock = Stock.new(deck)
 
     stock = keep_turning(stock)
@@ -43,7 +43,7 @@ defmodule StockTest do
   end
 
   test "The stock cards are the combination of up and down pile" do
-    deck = Deck.new
+    deck = Deck.new()
     stock = Stock.new(deck)
 
     stock = Stock.turn(stock)
@@ -54,14 +54,14 @@ defmodule StockTest do
   end
 
   test "When no up cards, the top card is nil" do
-    deck = Deck.new
+    deck = Deck.new()
     stock = Stock.new(deck)
 
     assert Stock.top_card(stock) == nil
   end
 
   test "When a card is turned over it becomes the top card" do
-    deck = Deck.new
+    deck = Deck.new()
     stock = Stock.new(deck)
     top = List.first(Stock.down(stock))
 
@@ -70,7 +70,7 @@ defmodule StockTest do
   end
 
   test "When a card is taken, the card below it becomes the top card" do
-    deck = Deck.new
+    deck = Deck.new()
     stock = Stock.new(deck)
     top = List.first(Stock.down(stock))
 
@@ -79,5 +79,4 @@ defmodule StockTest do
     stock = Stock.take(stock)
     assert Stock.top_card(stock) == top
   end
-
 end
