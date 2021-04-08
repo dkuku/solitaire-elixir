@@ -171,6 +171,15 @@ defmodule GameTest do
     assert errors == [{:foundation_base_mismatch, 1, Cards.new(:diams, 3), nil}]
   end
 
+  test "Reshuffle stock after 23 turns" do
+    deck = Deck.shuffle(Deck.new(), 1)
+    game = Enum.reduce(1..23, Game.new(deck), fn _, acc -> Game.turn(acc) end)
+
+    assert Game.exhausted?(game)
+    game = Game.reshuffle(game)
+    refute Game.exhausted?(game)
+  end
+
   defp test_game() do
     deck = Deck.shuffle(Deck.new(), 1234)
     Game.new(deck)

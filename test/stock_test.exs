@@ -79,4 +79,20 @@ defmodule StockTest do
     stock = Stock.take(stock)
     assert Stock.top_card(stock) == top
   end
+
+  test "Exhausted stock can be reused when all cards are turned over" do
+    deck = Deck.new()
+    stock = Stock.new(deck)
+    first_card = stock |> Stock.up() |> Enum.at(0)
+
+    stock = keep_turning(stock)
+    assert length(Stock.down(stock)) == 0
+    assert length(Stock.up(stock)) == 52
+    assert Stock.exhausted?(stock)
+    stock = Stock.retry(stock)
+    assert length(Stock.down(stock)) == 52
+    assert length(Stock.up(stock)) == 0
+    refute Stock.exhausted?(stock)
+    assert first_card == stock |> Stock.up() |> Enum.at(0)
+  end
 end
