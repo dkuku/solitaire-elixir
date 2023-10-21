@@ -1,104 +1,67 @@
 defmodule Solitaire do
   @moduledoc """
   Documentation for Solitaire.
-
-
   """
+  @random_max 1_000_000
+  alias Solitaire.Deck
+  alias Solitaire.Game
+  use GenServer
 
-  defmodule Cards do
-    @moduledoc """
-    A card has a suit and a value
-
-    ## Examples
-
-        iex> length(Solitaire.Cards.suits)
-        4
-        iex> length(Solitaire.Cards.values)
-        13
-
-    """
-
-    @type suit :: :hearts | :diams | :spades | :clubs
-    @type value :: non_neg_integer
-    @type colour :: :red | :black
-    @type card :: {suit, value}
-    @type t :: card
-
-    @spec new(suit, value) :: card
-    @doc "Make a card with given suit and value"
-    def new(suit, value) do
-      {suit, value}
-    end
-
-    @spec suit_of(card) :: suit
-    @doc "Returns suit part of card"
-    def suit_of({suit, _value}) do
-      suit
-    end
-
-    @spec value_of(card) :: value
-    @doc "Returns value part of card"
-    def value_of({_suit, value}) do
-      value
-    end
-
-    @spec colour_of(card) :: colour
-    @doc "Return the colour of the card"
-    def colour_of({suit, _value}) do
-      colour_of_suit(suit)
-    end
-
-    defp colour_of_suit(:hearts), do: :red
-    defp colour_of_suit(:diams), do: :red
-    defp colour_of_suit(:clubs), do: :black
-    defp colour_of_suit(:spades), do: :black
-
-    @spec suits :: [suit]
-    @doc "List of possible card suits"
-    def suits do
-      [:hearts, :diams, :spades, :clubs]
-    end
-
-    @spec values :: [value]
-    @doc "List of possible card values"
-    def values do
-      Enum.to_list(1..13)
-    end
+  def start_link(opts) do
+    GenServer.start_link(__MODULE__, opts)
   end
 
-  defmodule Deck do
-    @moduledoc """
-      A region contains a `Sudoku.Grid` and communicates results with neighbouring Regions 
+  def possible_moves(pid) do
+    GenServer.call(pid, :possible_moves)
+  end
 
-      It implementes the `Sudoku.Notifyable` behaviour
+  def get_state(pid) do
+    GenServer.call(pid, :get_state)
+  end
 
-        iex> deck = Solitaire.Deck.new
-        iex> length(deck)
-        52
-        iex> Solitaire.Deck.shuffle(deck,1234) == deck
-        false
-        iex> Solitaire.Deck.shuffle(deck,1234) == Solitaire.Deck.shuffle(deck,1234)
-        true
-        iex> Solitaire.Deck.shuffle(deck,1234) == Solitaire.Deck.shuffle(deck,12345)
-        false
+  def reshuffle(pid) do
+    GenServer.call(pid, :reshuffle)
+  end
 
-    """
+  def turn(pid) do
+    GenServer.call(pid, :turn)
+  end
 
-    @type t :: [Cards.t()]
+  def perform(pid, move) do
+    GenServer.call(pid, {:perform, move})
+  end
 
-    @spec new :: Deck.t()
-    @doc "Create a deck of all possible cards"
-    def new do
-      for suit <- Cards.suits(), value <- Solitaire.Cards.values() do
-        Cards.new(suit, value)
-      end
-    end
+  def init(opts) do
+    seed = Keyword.get(opts, :seed, @random_max)
 
-    @spec shuffle(Deck.t(), integer) :: Deck.t()
-    @doc "Shuffle a Deck based on a key. If you use the same key, you get the same randomized Deck"
-    def shuffle(deck, key) do
-      :rand.seed(:exsplus, {1, 2, key})
-      Enum.shuffle(deck)
-    end
+    game =
+      Deck.new()
+      |> Deck.shuffle(:rand.uniform(seed))
+      |> Game.new()
+
+    {:ok, game}
+  end
+
+  def handle_call(:get_state, _from, game) do
+    {:reply, game, game}
+  end
+
+  def handle_call(:possible_moves, _from, game) do
+    {:reply, Game.possible_moves(game), game}
+  end
+
+  def handle_call(:reshuffle, _from, game) do
+    game = Game.reshuffle(game)
+    {:reply, game, game}
+  end
+
+  def handle_call(:turn, _from, game) do
+    game = Game.turn(game)
+    {:reply, game, game}
+  end
+
+  def handle_call({:perform, move}, _from, game) do
+    game = Game.perform(game, move)
+    {:reply, game, game}
   end
 end
