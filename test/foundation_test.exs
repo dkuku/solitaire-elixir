@@ -1,9 +1,10 @@
 defmodule FoundationTest do
   use ExUnit.Case
-  doctest Solitaire.Foundation
 
-  alias Solitaire.Foundation, as: Foundation
   alias Solitaire.Cards, as: Cards
+  alias Solitaire.Foundation, as: Foundation
+
+  doctest Foundation
 
   test "A new Foundation is empty" do
     foundation = Foundation.new()
@@ -20,17 +21,13 @@ defmodule FoundationTest do
   end
 
   test "Drop an Ace onto an empty Foundation => Ace becomes top card" do
-    foundation =
-      Foundation.new()
-      |> Foundation.drop(Cards.new(:hearts, 1))
+    foundation = Foundation.drop(Foundation.new(), Cards.new(:hearts, 1))
 
     assert Foundation.up(foundation) == [Cards.new(:hearts, 1)]
   end
 
   test "Can drop cards onto foundation when same suit and following value" do
-    foundation =
-      Foundation.new()
-      |> Foundation.drop(Cards.new(:hearts, 1))
+    foundation = Foundation.drop(Foundation.new(), Cards.new(:hearts, 1))
 
     Enum.reduce(2..13, foundation, fn value, foundation ->
       card = Cards.new(:hearts, value)

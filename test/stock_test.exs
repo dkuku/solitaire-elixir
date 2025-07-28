@@ -1,9 +1,10 @@
 defmodule StockTest do
   use ExUnit.Case
-  doctest Solitaire.Stock
 
-  alias Solitaire.Stock, as: Stock
   alias Solitaire.Deck, as: Deck
+  alias Solitaire.Stock, as: Stock
+
+  doctest Stock
 
   test "The initial card contains all down, no up cards" do
     deck = Deck.new()

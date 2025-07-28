@@ -2,11 +2,12 @@ defmodule Solitaire do
   @moduledoc """
   Documentation for Solitaire.
   """
-  @random_max 1_000_000
-  alias Solitaire.Deck
-  alias Solitaire.Game
   use GenServer
 
+  alias Solitaire.Deck
+  alias Solitaire.Game
+
+  @random_max 1_000_000
   def start_link(opts) do
     GenServer.start_link(__MODULE__, opts)
   end

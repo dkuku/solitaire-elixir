@@ -1,8 +1,9 @@
 ExUnit.start(exclude: [:skip, :performance])
 
 defmodule Player do
-  alias Solitaire.Game, as: Game
+  @moduledoc false
   alias Solitaire.Deck, as: Deck
+  alias Solitaire.Game, as: Game
 
   @log 0
 

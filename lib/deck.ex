@@ -18,7 +18,7 @@ defmodule Solitaire.Deck do
   @spec new :: Deck.t()
   @doc "Create a deck of all possible cards"
   def new do
-    for suit <- Cards.suits(), value <- Solitaire.Cards.values() do
+    for suit <- Cards.suits(), value <- Cards.values() do
       Cards.new(suit, value)
     end
   end

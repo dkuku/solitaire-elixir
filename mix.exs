@@ -33,7 +33,8 @@ defmodule Solitaire.Mixfile do
     [
       {:ex_doc, "~> 0.30", only: :dev},
       {:earmark, "~> 1.4", only: :dev},
-      {:dialyxir, "~> 1.4", only: [:dev], runtime: false}
+      {:dialyxir, "~> 1.4", only: [:dev], runtime: false},
+      {:styler, "~> 1.5", only: [:dev], runtime: false}
     ]
   end
 end

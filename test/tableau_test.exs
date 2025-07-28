@@ -1,9 +1,10 @@
 defmodule TableauTest do
   use ExUnit.Case
-  doctest Solitaire.Tableau
 
-  alias Solitaire.Tableau, as: Tableau
   alias Solitaire.Cards, as: Cards
+  alias Solitaire.Tableau, as: Tableau
+
+  doctest Tableau
 
   test "an empty tableau has no down cards" do
     tableau = Tableau.new()
@@ -18,18 +19,14 @@ defmodule TableauTest do
   end
 
   test "add a set of down cards to the tableau. The top down card is turned up" do
-    tableau =
-      Tableau.new()
-      |> Tableau.add([Cards.new(:hearts, 12), Cards.new(:diams, 7), Cards.new(:spades, 1)])
+    tableau = Tableau.add(Tableau.new(), [Cards.new(:hearts, 12), Cards.new(:diams, 7), Cards.new(:spades, 1)])
 
     assert Tableau.down(tableau) == [Cards.new(:diams, 7), Cards.new(:spades, 1)]
     assert Tableau.up(tableau) == [Cards.new(:hearts, 12)]
   end
 
   test "When adding cards to a tableau with an up card, the up card is kept" do
-    tableau =
-      Tableau.new()
-      |> Tableau.add([Cards.new(:hearts, 12), Cards.new(:diams, 7), Cards.new(:spades, 1)])
+    tableau = Tableau.add(Tableau.new(), [Cards.new(:hearts, 12), Cards.new(:diams, 7), Cards.new(:spades, 1)])
 
     tableau = Tableau.add(tableau, [Cards.new(:clubs, 5)])
 
@@ -51,9 +48,7 @@ defmodule TableauTest do
   end
 
   test "Can drop a cards on a non-empty tableau if it has a different colour and its value is one less than top up card" do
-    tableau =
-      Tableau.new()
-      |> Tableau.add([Cards.new(:hearts, 12), Cards.new(:diams, 7), Cards.new(:spades, 1)])
+    tableau = Tableau.add(Tableau.new(), [Cards.new(:hearts, 12), Cards.new(:diams, 7), Cards.new(:spades, 1)])
 
     assert Tableau.can_drop?(tableau, Cards.new(:clubs, 11))
     assert Tableau.can_drop?(tableau, Cards.new(:spades, 11))
@@ -64,9 +59,7 @@ defmodule TableauTest do
   end
 
   test "When a King is dropped onto an empty tableau it becomes the top up card" do
-    tableau =
-      Tableau.new()
-      |> Tableau.drop(Cards.new(:spades, 13))
+    tableau = Tableau.drop(Tableau.new(), Cards.new(:spades, 13))
 
     assert Tableau.up(tableau) == [Cards.new(:spades, 13)]
   end
@@ -100,17 +93,13 @@ defmodule TableauTest do
   end
 
   test "An filled tableau has a bottom card: the lowest value visible card" do
-    tableau =
-      Tableau.new()
-      |> Tableau.add([Cards.new(:hearts, 12), Cards.new(:diams, 7), Cards.new(:spades, 1)])
+    tableau = Tableau.add(Tableau.new(), [Cards.new(:hearts, 12), Cards.new(:diams, 7), Cards.new(:spades, 1)])
 
     assert Tableau.bottom_card(tableau) == Cards.new(:hearts, 12)
   end
 
   test "Taking a card from a Tableau turns the next down card up" do
-    tableau =
-      Tableau.new()
-      |> Tableau.add([Cards.new(:hearts, 12), Cards.new(:diams, 7), Cards.new(:spades, 1)])
+    tableau = Tableau.add(Tableau.new(), [Cards.new(:hearts, 12), Cards.new(:diams, 7), Cards.new(:spades, 1)])
 
     tableau = Tableau.take(tableau)
     assert Tableau.bottom_card(tableau) == Cards.new(:diams, 7)
@@ -148,9 +137,7 @@ defmodule TableauTest do
   end
 
   test "A filled tableau has non-zero size" do
-    tableau =
-      Tableau.new()
-      |> Tableau.add([Cards.new(:hearts, 12), Cards.new(:diams, 7), Cards.new(:spades, 1)])
+    tableau = Tableau.add(Tableau.new(), [Cards.new(:hearts, 12), Cards.new(:diams, 7), Cards.new(:spades, 1)])
 
     assert Tableau.cards_up(tableau) == 1
     assert Tableau.cards_down(tableau) == 2

@@ -1,12 +1,13 @@
 defmodule GameTest do
   use ExUnit.Case, async: true
-  doctest Solitaire.Game
 
-  alias Solitaire.Game, as: Game
-  alias Solitaire.Foundation, as: Foundation
-  alias Solitaire.Tableau, as: Tableau
-  alias Solitaire.Deck, as: Deck
   alias Solitaire.Cards, as: Cards
+  alias Solitaire.Deck, as: Deck
+  alias Solitaire.Foundation, as: Foundation
+  alias Solitaire.Game, as: Game
+  alias Solitaire.Tableau, as: Tableau
+
+  doctest Game
 
   test "A new Game has 7 tableaus" do
     game = test_game()
@@ -180,7 +181,7 @@ defmodule GameTest do
     refute Game.exhausted?(game)
   end
 
-  defp test_game() do
+  defp test_game do
     deck = Deck.shuffle(Deck.new(), 1234)
     Game.new(deck)
 

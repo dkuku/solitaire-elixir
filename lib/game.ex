@@ -26,12 +26,12 @@ defmodule Solitaire.Game do
 
   """
 
-  alias Solitaire.Game, as: Game
-  alias Solitaire.Foundation, as: Foundation
-  alias Solitaire.Tableau, as: Tableau
-  alias Solitaire.Stock, as: Stock
-  alias Solitaire.Deck, as: Deck
   alias Solitaire.Cards, as: Cards
+  alias Solitaire.Deck, as: Deck
+  alias Solitaire.Foundation, as: Foundation
+  alias Solitaire.Game, as: Game
+  alias Solitaire.Stock, as: Stock
+  alias Solitaire.Tableau, as: Tableau
 
   @typedoc "The state of the Solitaire Game: a deck, 7 tableaus and 4 foundations"
   @opaque game :: {Stock.t(), [Tableau.t()], [Foundation.t()]}
@@ -103,7 +103,7 @@ defmodule Solitaire.Game do
     ]
   end
 
-  defp create_foundations() do
+  defp create_foundations do
     for _foundation <- 1..4 do
       Foundation.new()
     end
@@ -146,7 +146,7 @@ defmodule Solitaire.Game do
       foundation =
         Enum.find_index(foundations, fn foundation -> Foundation.can_drop?(foundation, card) end)
 
-      if foundation != nil, do: {:tableau, index, :foundation, foundation, card}, else: nil
+      if foundation == nil, do: nil, else: {:tableau, index, :foundation, foundation, card}
     end
   end
 
@@ -172,8 +172,7 @@ defmodule Solitaire.Game do
       to_height = Tableau.cards_up(tableau)
 
       if Tableau.can_drop?(tableau, card) && (to_height > 0 || from_height > 0),
-        do: {:tableau, index, :tableau, tableau_index, card},
-        else: nil
+        do: {:tableau, index, :tableau, tableau_index, card}
     end
   end
 
@@ -183,7 +182,7 @@ defmodule Solitaire.Game do
     foundation =
       Enum.find_index(foundations, fn foundation -> Foundation.can_drop?(foundation, card) end)
 
-    if foundation != nil, do: [{:deck, 0, :foundation, foundation, card}], else: []
+    if foundation == nil, do: [], else: [{:deck, 0, :foundation, foundation, card}]
   end
 
   defp find_moves_from_deck_to_tableaus(nil, _tableaus), do: []
@@ -193,8 +192,7 @@ defmodule Solitaire.Game do
       tableau = Enum.at(tableaus, tableau_index)
 
       if Tableau.can_drop?(tableau, card),
-        do: {:deck, 0, :tableau, tableau_index, card},
-        else: nil
+        do: {:deck, 0, :tableau, tableau_index, card}
     end
   end
 

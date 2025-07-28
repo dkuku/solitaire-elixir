@@ -6,10 +6,10 @@ defmodule Solitaire.Game.Debug do
 
   """
 
-  alias Solitaire.Game, as: Game
-  alias Solitaire.Foundation, as: Foundation
-  alias Solitaire.Tableau, as: Tableau
   alias Solitaire.Cards, as: Cards
+  alias Solitaire.Foundation, as: Foundation
+  alias Solitaire.Game, as: Game
+  alias Solitaire.Tableau, as: Tableau
 
   @typedoc "A game can be invalid because 1) cards on tableau are in wrong order/colour 2) cards on foundation are in wrong order/colour or 3) foundation doesn't start with ace'"
   @type error_type :: :tableau_mismatch | :foundation_mismatch | :foundation_base_mismatch
